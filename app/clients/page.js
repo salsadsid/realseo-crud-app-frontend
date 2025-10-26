@@ -1,9 +1,17 @@
 "use client";
-import { useGetClientsQuery } from "@/services/clientApi";
+import {
+  useDeleteClientMutation,
+  useGetClientsQuery,
+} from "@/services/clientApi";
 import Alert from "@mui/material/Alert";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import CircularProgress from "@mui/material/CircularProgress";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogContentText from "@mui/material/DialogContentText";
+import DialogTitle from "@mui/material/DialogTitle";
 import IconButton from "@mui/material/IconButton";
 import Paper from "@mui/material/Paper";
 import Stack from "@mui/material/Stack";
@@ -16,7 +24,8 @@ import TableRow from "@mui/material/TableRow";
 import Typography from "@mui/material/Typography";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { FiEdit } from "react-icons/fi";
+import * as React from "react";
+import { FiEdit, FiTrash2 } from "react-icons/fi";
 
 function formatDate(value) {
   if (!value) return "-";
@@ -28,6 +37,30 @@ function formatDate(value) {
 export default function ClientsPage() {
   const router = useRouter();
   const { data, error, isLoading, isFetching } = useGetClientsQuery();
+  const [deleteClient, { isLoading: isDeleting }] = useDeleteClientMutation();
+
+  const [deleteDialog, setDeleteDialog] = React.useState({
+    open: false,
+    clientId: null,
+    clientName: "",
+  });
+
+  const handleDeleteClick = (clientId, clientName) => {
+    setDeleteDialog({ open: true, clientId, clientName });
+  };
+
+  const handleDeleteConfirm = async () => {
+    try {
+      await deleteClient(deleteDialog.clientId).unwrap();
+      setDeleteDialog({ open: false, clientId: null, clientName: "" });
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const handleDeleteCancel = () => {
+    setDeleteDialog({ open: false, clientId: null, clientName: "" });
+  };
 
   return (
     <Box>
@@ -68,7 +101,7 @@ export default function ClientsPage() {
             <TableBody>
               {data && data.length ? (
                 data.map((row) => {
-                  const name = row.name || "-";
+                  const name = row.firstName || "-";
                   const address = row.address || "-";
                   const date = formatDate(row.createdAt) || "-";
                   const email = row.email || "-";
@@ -90,6 +123,13 @@ export default function ClientsPage() {
                         >
                           <FiEdit />
                         </IconButton>
+                        <IconButton
+                          size="small"
+                          color="error"
+                          onClick={() => handleDeleteClick(row.id, name)}
+                        >
+                          <FiTrash2 />
+                        </IconButton>
                       </TableCell>
                     </TableRow>
                   );
@@ -110,6 +150,34 @@ export default function ClientsPage() {
           Refreshing...
         </Typography>
       )}
+
+      <Dialog
+        open={deleteDialog.open}
+        onClose={handleDeleteCancel}
+        aria-labelledby="delete-dialog-title"
+      >
+        <DialogTitle id="delete-dialog-title">Confirm Delete</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            Are you sure you want to delete client "{deleteDialog.clientName}"?
+            This action cannot be undone.
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleDeleteCancel} disabled={isDeleting}>
+            Cancel
+          </Button>
+          <Button
+            onClick={handleDeleteConfirm}
+            color="error"
+            variant="contained"
+            disabled={isDeleting}
+            autoFocus
+          >
+            {isDeleting ? "Deleting..." : "Delete"}
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Box>
   );
 }

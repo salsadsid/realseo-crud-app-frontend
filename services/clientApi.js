@@ -32,6 +32,13 @@ export const clientApi = baseApi.injectEndpoints({
         { type: "Clients", id: "LIST" },
       ],
     }),
+    deleteClient: builder.mutation({
+      query: (id) => ({
+        url: `/clients/${id}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: [{ type: "Clients", id: "LIST" }],
+    }),
   }),
   overrideExisting: false,
 });
@@ -41,6 +48,7 @@ export const {
   useGetClientByIdQuery,
   useAddClientMutation,
   useUpdateClientMutation,
+  useDeleteClientMutation,
 } = clientApi;
 
 export default clientApi;
