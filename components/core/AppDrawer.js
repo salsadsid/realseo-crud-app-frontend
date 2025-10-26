@@ -3,6 +3,7 @@ import menuItems from "@/config/menu-items";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import MenuIcon from "@mui/icons-material/Menu";
+import { Breadcrumbs } from "@mui/material";
 import MuiAppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -78,7 +79,44 @@ const DrawerHeader = styled("div")(({ theme }) => ({
   justifyContent: "flex-end",
 }));
 
-export default function AppDrawer() {
+function RouteBreadcrumbs() {
+  const pathname = usePathname() || "/";
+  const parts = pathname.split("/").filter(Boolean);
+
+  const labelMap = {
+    dashboard: "Dashboard",
+    clients: "Clients",
+    settings: "Settings",
+    profile: "Profile",
+  };
+
+  const crumbs = parts.map((part, idx) => {
+    const href = `/${parts.slice(0, idx + 1).join("/")}`;
+    return {
+      text: labelMap[part] || part.replace(/-/g, " "),
+      href,
+    };
+  });
+
+  return (
+    <Breadcrumbs aria-label="breadcrumb" separator="›" sx={{ mb: 2 }}>
+      <Link href="/" style={{ color: "inherit", textDecoration: "none" }}>
+        Home
+      </Link>
+      {crumbs.map((c) => (
+        <Link
+          key={c.href}
+          href={c.href}
+          style={{ color: "inherit", textDecoration: "none" }}
+        >
+          {c.text}
+        </Link>
+      ))}
+    </Breadcrumbs>
+  );
+}
+
+export default function AppDrawer({ children }) {
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
   const pathname = usePathname();
@@ -153,13 +191,7 @@ export default function AppDrawer() {
                   display: "block",
                 }}
               >
-                <ListItemButton
-                  selected={pathname === item.path}
-                  onClick={() => {
-                    // close drawer after navigation
-                    handleDrawerClose();
-                  }}
-                >
+                <ListItemButton selected={pathname === item.path}>
                   <ListItemIcon>{item.icon}</ListItemIcon>
                   <ListItemText primary={item.text} />
                 </ListItemButton>
@@ -168,6 +200,11 @@ export default function AppDrawer() {
           ))}
         </List>
       </Drawer>
+      <Main open={open}>
+        <DrawerHeader />
+        <RouteBreadcrumbs />
+        {children}
+      </Main>
     </Box>
   );
 }

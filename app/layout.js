@@ -29,8 +29,7 @@ export default function RootLayout({ children }) {
           <ThemeProvider theme={theme}>
             {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
             <CssBaseline />
-            <AppDrawer />
-            {children}
+            <AppDrawer>{children}</AppDrawer>
           </ThemeProvider>
         </AppRouterCacheProvider>
       </body>
