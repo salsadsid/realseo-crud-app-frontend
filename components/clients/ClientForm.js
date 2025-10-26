@@ -2,6 +2,7 @@
 import Alert from "@mui/material/Alert";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
+import MenuItem from "@mui/material/MenuItem";
 import Paper from "@mui/material/Paper";
 import Stack from "@mui/material/Stack";
 import TextField from "@mui/material/TextField";
@@ -27,7 +28,6 @@ export default function ClientForm({
     dob: initialData?.dob
       ? new Date(initialData.dob).toISOString().split("T")[0]
       : "",
-    price: initialData?.price || "",
     packageName: initialData?.packageName || "",
     comments: initialData?.comments || "",
   });
@@ -44,7 +44,6 @@ export default function ClientForm({
         dob: initialData.dob
           ? new Date(initialData.dob).toISOString().split("T")[0]
           : "",
-        price: initialData.price || "",
         packageName: initialData.packageName || "",
         comments: initialData.comments || "",
       });
@@ -65,7 +64,6 @@ export default function ClientForm({
       address: form.address || null,
       companyName: form.companyName || null,
       dob: form.dob ? new Date(form.dob).toISOString() : null,
-      price: form.price ? String(form.price) : null,
       packageName: form.packageName || null,
       comments: form.comments || null,
     };
@@ -223,17 +221,27 @@ export default function ClientForm({
                 variant="subtitle2"
                 sx={{ mb: 1, color: "text.secondary" }}
               >
-                Price
+                Package
               </Typography>
               <TextField
-                name="price"
+                name="packageName"
                 fullWidth
                 variant="standard"
-                type="number"
-                placeholder="Please Select your Packages"
-                value={form.price}
+                select
+                displayEmpty
+                value={form.packageName}
                 onChange={handleChange}
-              />
+                SelectProps={{
+                  displayEmpty: true,
+                }}
+              >
+                <MenuItem value="" disabled>
+                  Select Package
+                </MenuItem>
+                <MenuItem value="basic">Basic</MenuItem>
+                <MenuItem value="pro">Pro</MenuItem>
+                <MenuItem value="pro plus">Pro Plus</MenuItem>
+              </TextField>
             </Box>
             <Box sx={{ flex: 1 }}>
               <Typography
