@@ -1,4 +1,5 @@
 import AppDrawer from "@/components/core/AppDrawer";
+import ReduxProvider from "@/providers/ReduxProvider";
 import { CssBaseline, ThemeProvider } from "@mui/material";
 import { AppRouterCacheProvider } from "@mui/material-nextjs/v15-appRouter";
 import { Geist, Geist_Mono } from "next/font/google";
@@ -27,9 +28,10 @@ export default function RootLayout({ children }) {
       >
         <AppRouterCacheProvider options={{ enableCssLayer: true }}>
           <ThemeProvider theme={theme}>
-            {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
-            <CssBaseline />
-            <AppDrawer>{children}</AppDrawer>
+            <ReduxProvider>
+              <CssBaseline />
+              <AppDrawer>{children}</AppDrawer>
+            </ReduxProvider>
           </ThemeProvider>
         </AppRouterCacheProvider>
       </body>
