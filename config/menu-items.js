@@ -16,5 +16,10 @@ const menuItems = [
     icon: <FiUser />,
     path: "/profile",
   },
+  {
+    text: "Clients",
+    icon: <FiUser />,
+    path: "/clients",
+  },
 ];
 export default menuItems;

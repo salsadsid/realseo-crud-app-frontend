@@ -21,6 +21,7 @@ import Typography from "@mui/material/Typography";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import * as React from "react";
+import Footer from "./Footer";
 
 const drawerWidth = 240;
 
@@ -200,10 +201,21 @@ export default function AppDrawer({ children }) {
           ))}
         </List>
       </Drawer>
-      <Main open={open}>
+      <Main open={open} className=" bg-[#F5F5F5] min-h-screen">
         <DrawerHeader />
         <RouteBreadcrumbs />
-        {children}
+        <Box
+          sx={{
+            mb: 2,
+            p: 2,
+            minHeight: "calc(100vh - 280px)",
+            backgroundColor: "#FFFFFF",
+            borderRadius: "4px",
+          }}
+        >
+          {children}
+        </Box>
+        <Footer />
       </Main>
     </Box>
   );

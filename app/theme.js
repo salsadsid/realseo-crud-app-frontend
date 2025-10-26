@@ -12,6 +12,18 @@ const theme = createTheme({
   cssVariables: true,
   palette: {
     mode: "light",
+    primary: {
+      main: "#86937F",
+      contrastText: "#ffffff",
+    },
+    success: {
+      main: "#86937F",
+      contrastText: "#ffffff",
+    },
+    text: {
+      primary: "#111827",
+      secondary: "#6b7280",
+    },
   },
   typography: {
     fontFamily: roboto.style.fontFamily,
