@@ -13,10 +13,34 @@ export const clientApi = baseApi.injectEndpoints({
             ]
           : [{ type: "Clients", id: "LIST" }],
     }),
+    getClientById: builder.query({
+      query: (id) => ({ url: `/clients/${id}` }),
+      providesTags: (result, error, id) => [{ type: "Clients", id }],
+    }),
+    addClient: builder.mutation({
+      query: (payload) => ({ url: "/clients", method: "POST", body: payload }),
+      invalidatesTags: [{ type: "Clients", id: "LIST" }],
+    }),
+    updateClient: builder.mutation({
+      query: ({ id, ...payload }) => ({
+        url: `/clients/${id}`,
+        method: "PUT",
+        body: payload,
+      }),
+      invalidatesTags: (result, error, { id }) => [
+        { type: "Clients", id },
+        { type: "Clients", id: "LIST" },
+      ],
+    }),
   }),
   overrideExisting: false,
 });
 
-export const { useGetClientsQuery } = clientApi;
+export const {
+  useGetClientsQuery,
+  useGetClientByIdQuery,
+  useAddClientMutation,
+  useUpdateClientMutation,
+} = clientApi;
 
 export default clientApi;

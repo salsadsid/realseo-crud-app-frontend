@@ -2,8 +2,11 @@
 import { useGetClientsQuery } from "@/services/clientApi";
 import Alert from "@mui/material/Alert";
 import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
 import CircularProgress from "@mui/material/CircularProgress";
+import IconButton from "@mui/material/IconButton";
 import Paper from "@mui/material/Paper";
+import Stack from "@mui/material/Stack";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -11,6 +14,9 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Typography from "@mui/material/Typography";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { FiEdit } from "react-icons/fi";
 
 function formatDate(value) {
   if (!value) return "-";
@@ -20,13 +26,24 @@ function formatDate(value) {
 }
 
 export default function ClientsPage() {
+  const router = useRouter();
   const { data, error, isLoading, isFetching } = useGetClientsQuery();
 
   return (
     <Box>
-      <Typography variant="h5" sx={{ mb: 2 }}>
-        Clients
-      </Typography>
+      <Stack
+        direction="row"
+        justifyContent="space-between"
+        alignItems="center"
+        sx={{ mb: 2 }}
+      >
+        <Typography variant="h6" sx={{ mb: 1, fontWeight: 600 }}>
+          Clients
+        </Typography>
+        <Link href="/clients/new" style={{ textDecoration: "none" }}>
+          <Button variant="contained">Add New Client</Button>
+        </Link>
+      </Stack>
 
       {isLoading ? (
         <Box sx={{ display: "flex", justifyContent: "center", py: 6 }}>
@@ -45,6 +62,7 @@ export default function ClientsPage() {
                 <TableCell>Email</TableCell>
                 <TableCell>Cell</TableCell>
                 <TableCell>Comments</TableCell>
+                <TableCell align="right">Actions</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -64,12 +82,21 @@ export default function ClientsPage() {
                       <TableCell>{email}</TableCell>
                       <TableCell>{cell}</TableCell>
                       <TableCell>{comments}</TableCell>
+                      <TableCell align="right">
+                        <IconButton
+                          size="small"
+                          color="primary"
+                          onClick={() => router.push(`/clients/${row.id}/edit`)}
+                        >
+                          <FiEdit />
+                        </IconButton>
+                      </TableCell>
                     </TableRow>
                   );
                 })
               ) : (
                 <TableRow>
-                  <TableCell colSpan={6} align="center">
+                  <TableCell colSpan={7} align="center">
                     No clients found
                   </TableCell>
                 </TableRow>
