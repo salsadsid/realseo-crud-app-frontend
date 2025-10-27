@@ -74,20 +74,30 @@ function ClientsContent() {
   };
 
   return (
-    <Box sx={{ background: "white", borderRadius: "4px", p: 2 }}>
+    <Box sx={{ background: "white", borderRadius: "4px", p: { xs: 1, sm: 2 } }}>
       <Stack
-        direction="row"
+        direction={{ xs: "column", sm: "row" }}
         justifyContent="space-between"
-        alignItems="center"
+        alignItems={{ xs: "stretch", sm: "center" }}
+        spacing={{ xs: 2, sm: 0 }}
         sx={{ mb: 3 }}
       >
         <Typography variant="h6" sx={{ fontWeight: 600 }}>
           Clients
         </Typography>
-        <Stack direction="row" spacing={2} alignItems="center">
-          <SearchInput placeholder="Search clients..." />
+        <Stack
+          direction={{ xs: "column", sm: "row" }}
+          spacing={2}
+          alignItems="stretch"
+          sx={{ width: { xs: "100%", sm: "auto" } }}
+        >
+          <Box sx={{ flexGrow: { xs: 1, sm: 0 }, minWidth: { sm: 250 } }}>
+            <SearchInput placeholder="Search clients..." />
+          </Box>
           <Link href="/clients/new" style={{ textDecoration: "none" }}>
-            <Button variant="contained">Add New Client</Button>
+            <Button variant="contained" fullWidth sx={{ whiteSpace: "nowrap" }}>
+              Add New Client
+            </Button>
           </Link>
         </Stack>
       </Stack>
