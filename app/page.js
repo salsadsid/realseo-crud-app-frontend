@@ -1,12 +1,5 @@
-import { Button } from "@mui/material";
+import { redirect } from "next/navigation";
 
 export default function Home() {
-  return (
-    <div className="flex h-screen flex-col justify-center items-center gap-5">
-      <main> RealSEO CRUD App Frontend</main>
-      <Button variant="contained" color="primary">
-        Get Started
-      </Button>
-    </div>
-  );
+  redirect("/clients");
 }
