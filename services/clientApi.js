@@ -13,6 +13,7 @@ export const clientApi = baseApi.injectEndpoints({
           url: `/clients${queryParams.toString() ? `?${queryParams.toString()}` : ""}`,
         };
       },
+      transformResponse: (response) => response.data,
       providesTags: (result) =>
         result
           ? [
@@ -23,10 +24,12 @@ export const clientApi = baseApi.injectEndpoints({
     }),
     getClientById: builder.query({
       query: (id) => ({ url: `/clients/${id}` }),
+      transformResponse: (response) => response.data,
       providesTags: (result, error, id) => [{ type: "Clients", id }],
     }),
     addClient: builder.mutation({
       query: (payload) => ({ url: "/clients", method: "POST", body: payload }),
+      transformResponse: (response) => response.data,
       invalidatesTags: [{ type: "Clients", id: "LIST" }],
     }),
     updateClient: builder.mutation({
@@ -35,6 +38,7 @@ export const clientApi = baseApi.injectEndpoints({
         method: "PUT",
         body: payload,
       }),
+      transformResponse: (response) => response.data,
       invalidatesTags: (result, error, { id }) => [
         { type: "Clients", id },
         { type: "Clients", id: "LIST" },
