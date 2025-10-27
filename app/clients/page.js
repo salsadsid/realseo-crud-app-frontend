@@ -27,6 +27,7 @@ import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useSnackbar } from "notistack";
 import * as React from "react";
+import { Suspense } from "react";
 import { FiEdit, FiTrash2 } from "react-icons/fi";
 
 function formatDate(value) {
@@ -36,7 +37,7 @@ function formatDate(value) {
   return d.toLocaleDateString();
 }
 
-export default function ClientsPage() {
+function ClientsContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const searchQuery = searchParams.get("search") || "";
@@ -197,5 +198,19 @@ export default function ClientsPage() {
         </DialogActions>
       </Dialog>
     </Box>
+  );
+}
+
+export default function ClientsPage() {
+  return (
+    <Suspense
+      fallback={
+        <Box sx={{ display: "flex", justifyContent: "center", py: 6 }}>
+          <CircularProgress />
+        </Box>
+      }
+    >
+      <ClientsContent />
+    </Suspense>
   );
 }

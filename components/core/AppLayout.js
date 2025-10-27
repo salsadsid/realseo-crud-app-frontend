@@ -189,6 +189,8 @@ export default function AppLayout({ children }) {
         slots={{
           toolbarActions: ToolbarActions,
         }}
+        defaultSidebarCollapsed={false}
+        sidebarExpandedWidth={235}
         sx={{
           "& .MuiAppBar-root": {
             backgroundColor: "#86937F",
@@ -196,6 +198,9 @@ export default function AppLayout({ children }) {
           },
           "& .MuiIconButton-root": {
             color: "#FFFFFF",
+          },
+          "& .MuiDrawer-paper": {
+            borderRight: "none",
           },
         }}
       >
