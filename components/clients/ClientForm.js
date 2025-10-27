@@ -72,8 +72,8 @@ export default function ClientForm({
   };
 
   return (
-    <Box sx={{ py: 4 }}>
-      <Paper sx={{ p: 4, border: 0, boxShadow: "none" }}>
+    <Box sx={{ py: { xs: 2, sm: 4 } }}>
+      <Paper sx={{ p: { xs: 2, sm: 3, md: 4 }, border: 0, boxShadow: "none" }}>
         <Typography variant="h6" sx={{ mb: 1, fontWeight: 600 }}>
           {isEditMode ? "Edit Client" : "Add New Client"}
         </Typography>
@@ -83,7 +83,7 @@ export default function ClientForm({
             height: 4,
             bgcolor: "success.light",
             borderRadius: 1,
-            mb: 4,
+            mb: { xs: 3, sm: 4 },
           }}
         />
 
@@ -94,7 +94,11 @@ export default function ClientForm({
         )}
 
         <Box sx={{ mt: 2 }}>
-          <Stack direction="row" spacing={4} sx={{ mb: 4 }}>
+          <Stack
+            direction={{ xs: "column", sm: "column", md: "row" }}
+            spacing={{ xs: 3, sm: 3, md: 4 }}
+            sx={{ mb: { xs: 3, sm: 4 } }}
+          >
             <Box sx={{ flex: 1 }}>
               <Typography
                 variant="subtitle2"
@@ -145,7 +149,11 @@ export default function ClientForm({
             </Box>
           </Stack>
 
-          <Stack direction="row" spacing={4} sx={{ mb: 4 }}>
+          <Stack
+            direction={{ xs: "column", sm: "column", md: "row" }}
+            spacing={{ xs: 3, sm: 3, md: 4 }}
+            sx={{ mb: { xs: 3, sm: 4 } }}
+          >
             <Box sx={{ flex: 1 }}>
               <Typography
                 variant="subtitle2"
@@ -199,7 +207,11 @@ export default function ClientForm({
             </Box>
           </Stack>
 
-          <Stack direction="row" spacing={4} sx={{ mb: 4 }}>
+          <Stack
+            direction={{ xs: "column", sm: "column", md: "row" }}
+            spacing={{ xs: 3, sm: 3, md: 4 }}
+            sx={{ mb: { xs: 3, sm: 4 } }}
+          >
             <Box sx={{ flex: 1 }}>
               <Typography
                 variant="subtitle2"
@@ -264,14 +276,16 @@ export default function ClientForm({
           <Box
             sx={{
               display: "flex",
+              flexDirection: { xs: "column", sm: "row" },
               justifyContent: "flex-end",
               gap: 2,
-              mt: 6,
+              mt: { xs: 4, sm: 6 },
             }}
           >
             <Button
               variant="outlined"
               onClick={onCancel}
+              fullWidth={{ xs: true, sm: false }}
               sx={{ px: 4, py: 1, textTransform: "uppercase" }}
             >
               Back
@@ -283,6 +297,7 @@ export default function ClientForm({
               disabled={
                 isLoading || !form.firstName || !form.lastName || !form.email
               }
+              fullWidth={{ xs: true, sm: false }}
               sx={{ px: 4, py: 1, textTransform: "uppercase" }}
             >
               {isLoading ? "Saving..." : "Submit"}
