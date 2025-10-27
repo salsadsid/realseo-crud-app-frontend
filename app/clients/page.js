@@ -100,7 +100,7 @@ export default function ClientsPage() {
       ) : (
         <TableContainer component={Paper}>
           <Table>
-            <TableHead>
+            <TableHead sx={{ background: "#729E5A33" }}>
               <TableRow>
                 <TableCell>Client Name</TableCell>
                 <TableCell>Address</TableCell>
