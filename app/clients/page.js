@@ -63,7 +63,7 @@ export default function ClientsPage() {
   };
 
   return (
-    <Box>
+    <Box sx={{ background: "white", borderRadius: "4px", p: 2 }}>
       <Stack
         direction="row"
         justifyContent="space-between"
