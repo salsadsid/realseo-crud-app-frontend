@@ -1,4 +1,4 @@
-import AppDrawer from "@/components/core/AppDrawer";
+import AppLayout from "@/components/core/AppLayout";
 import ReduxProvider from "@/providers/ReduxProvider";
 import { CssBaseline, ThemeProvider } from "@mui/material";
 import { AppRouterCacheProvider } from "@mui/material-nextjs/v15-appRouter";
@@ -30,7 +30,7 @@ export default function RootLayout({ children }) {
           <ThemeProvider theme={theme}>
             <ReduxProvider>
               <CssBaseline />
-              <AppDrawer>{children}</AppDrawer>
+              <AppLayout>{children}</AppLayout>
             </ReduxProvider>
           </ThemeProvider>
         </AppRouterCacheProvider>
