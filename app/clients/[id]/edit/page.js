@@ -8,11 +8,13 @@ import Alert from "@mui/material/Alert";
 import Box from "@mui/material/Box";
 import CircularProgress from "@mui/material/CircularProgress";
 import { useParams, useRouter } from "next/navigation";
+import { useSnackbar } from "notistack";
 
 export default function EditClientPage() {
   const params = useParams();
   const router = useRouter();
   const clientId = params.id;
+  const { enqueueSnackbar } = useSnackbar();
 
   const {
     data: client,
@@ -24,9 +26,11 @@ export default function EditClientPage() {
   const handleSubmit = async (payload) => {
     try {
       await updateClient({ id: clientId, ...payload }).unwrap();
+      enqueueSnackbar("Client updated successfully", { variant: "success" });
       router.push("/clients");
     } catch (err) {
       console.error(err);
+      enqueueSnackbar("Failed to update client", { variant: "error" });
     }
   };
 

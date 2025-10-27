@@ -25,6 +25,7 @@ import TableRow from "@mui/material/TableRow";
 import Typography from "@mui/material/Typography";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
+import { useSnackbar } from "notistack";
 import * as React from "react";
 import { FiEdit, FiTrash2 } from "react-icons/fi";
 
@@ -39,6 +40,7 @@ export default function ClientsPage() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const searchQuery = searchParams.get("search") || "";
+  const { enqueueSnackbar } = useSnackbar();
 
   const { data, error, isLoading, isFetching } = useGetClientsQuery({
     search: searchQuery,
@@ -59,8 +61,10 @@ export default function ClientsPage() {
     try {
       await deleteClient(deleteDialog.clientId).unwrap();
       setDeleteDialog({ open: false, clientId: null, clientName: "" });
+      enqueueSnackbar("Client deleted successfully", { variant: "success" });
     } catch (err) {
       console.error(err);
+      enqueueSnackbar("Failed to delete client", { variant: "error" });
     }
   };
 

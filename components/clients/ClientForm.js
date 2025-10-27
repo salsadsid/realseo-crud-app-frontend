@@ -278,7 +278,7 @@ export default function ClientForm({
             </Button>
             <Button
               variant="contained"
-              color="success"
+              color="primary"
               onClick={handleSubmit}
               disabled={
                 isLoading || !form.firstName || !form.lastName || !form.email

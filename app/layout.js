@@ -1,5 +1,6 @@
 import AppLayout from "@/components/core/AppLayout";
 import ReduxProvider from "@/providers/ReduxProvider";
+import CustomSnackbarProvider from "@/providers/SnackbarProvider";
 import { CssBaseline, ThemeProvider } from "@mui/material";
 import { AppRouterCacheProvider } from "@mui/material-nextjs/v15-appRouter";
 import { Geist, Geist_Mono } from "next/font/google";
@@ -28,10 +29,12 @@ export default function RootLayout({ children }) {
       >
         <AppRouterCacheProvider options={{ enableCssLayer: true }}>
           <ThemeProvider theme={theme}>
-            <ReduxProvider>
-              <CssBaseline />
-              <AppLayout>{children}</AppLayout>
-            </ReduxProvider>
+            <CustomSnackbarProvider>
+              <ReduxProvider>
+                <CssBaseline />
+                <AppLayout>{children}</AppLayout>
+              </ReduxProvider>
+            </CustomSnackbarProvider>
           </ThemeProvider>
         </AppRouterCacheProvider>
       </body>
