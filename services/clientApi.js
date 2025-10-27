@@ -4,7 +4,15 @@ import { baseApi } from "@/services/baseApi";
 export const clientApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     getClients: builder.query({
-      query: () => ({ url: "/clients" }),
+      query: (params = {}) => {
+        const queryParams = new URLSearchParams();
+        if (params.search) {
+          queryParams.append("search", params.search);
+        }
+        return {
+          url: `/clients${queryParams.toString() ? `?${queryParams.toString()}` : ""}`,
+        };
+      },
       providesTags: (result) =>
         result
           ? [

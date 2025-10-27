@@ -1,4 +1,6 @@
 "use client";
+import ButtonIcon from "@/components/common/ButtonIcon";
+import SearchInput from "@/components/common/SearchInput";
 import {
   useDeleteClientMutation,
   useGetClientsQuery,
@@ -12,7 +14,6 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
-import IconButton from "@mui/material/IconButton";
 import Paper from "@mui/material/Paper";
 import Stack from "@mui/material/Stack";
 import Table from "@mui/material/Table";
@@ -23,7 +24,7 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Typography from "@mui/material/Typography";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import * as React from "react";
 import { FiEdit, FiTrash2 } from "react-icons/fi";
 
@@ -36,7 +37,12 @@ function formatDate(value) {
 
 export default function ClientsPage() {
   const router = useRouter();
-  const { data, error, isLoading, isFetching } = useGetClientsQuery();
+  const searchParams = useSearchParams();
+  const searchQuery = searchParams.get("search") || "";
+
+  const { data, error, isLoading, isFetching } = useGetClientsQuery({
+    search: searchQuery,
+  });
   const [deleteClient, { isLoading: isDeleting }] = useDeleteClientMutation();
 
   const [deleteDialog, setDeleteDialog] = React.useState({
@@ -68,14 +74,17 @@ export default function ClientsPage() {
         direction="row"
         justifyContent="space-between"
         alignItems="center"
-        sx={{ mb: 2 }}
+        sx={{ mb: 3 }}
       >
-        <Typography variant="h6" sx={{ mb: 1, fontWeight: 600 }}>
+        <Typography variant="h6" sx={{ fontWeight: 600 }}>
           Clients
         </Typography>
-        <Link href="/clients/new" style={{ textDecoration: "none" }}>
-          <Button variant="contained">Add New Client</Button>
-        </Link>
+        <Stack direction="row" spacing={2} alignItems="center">
+          <SearchInput placeholder="Search clients..." />
+          <Link href="/clients/new" style={{ textDecoration: "none" }}>
+            <Button variant="contained">Add New Client</Button>
+          </Link>
+        </Stack>
       </Stack>
 
       {isLoading ? (
@@ -101,7 +110,9 @@ export default function ClientsPage() {
             <TableBody>
               {data && data.length ? (
                 data.map((row) => {
-                  const name = row.firstName || "-";
+                  const name =
+                    (row.firstName || "") + " " + (row.lastName || "").trim() ||
+                    "-";
                   const address = row.address || "-";
                   const date = formatDate(row.createdAt) || "-";
                   const email = row.email || "-";
@@ -115,21 +126,24 @@ export default function ClientsPage() {
                       <TableCell>{email}</TableCell>
                       <TableCell>{cell}</TableCell>
                       <TableCell>{comments}</TableCell>
-                      <TableCell align="right">
-                        <IconButton
-                          size="small"
-                          color="primary"
+                      <TableCell
+                        sx={{
+                          gap: 1,
+                          display: "flex",
+                          justifyContent: "flex-end",
+                        }}
+                      >
+                        <ButtonIcon
+                          variant="primary"
                           onClick={() => router.push(`/clients/${row.id}/edit`)}
-                        >
-                          <FiEdit />
-                        </IconButton>
-                        <IconButton
-                          size="small"
-                          color="error"
+                          icon={<FiEdit />}
+                        />
+
+                        <ButtonIcon
+                          variant="error"
                           onClick={() => handleDeleteClick(row.id, name)}
-                        >
-                          <FiTrash2 />
-                        </IconButton>
+                          icon={<FiTrash2 />}
+                        />
                       </TableCell>
                     </TableRow>
                   );

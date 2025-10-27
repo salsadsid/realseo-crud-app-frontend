@@ -11,7 +11,7 @@ const EmptyRoute = () => {
         p: 8,
         textAlign: "center",
         backgroundColor: "#FFFFFF",
-        borderRadius: "8px",
+        borderRadius: "4px",
         border: "1px solid #E5E7EB",
       }}
     >

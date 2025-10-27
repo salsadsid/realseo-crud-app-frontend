@@ -210,8 +210,8 @@ export default function AppLayout({ children }) {
         >
           <RouteBreadcrumbs />
           {children}
+          <Footer />
         </Box>
-        <Footer />
       </DashboardLayout>
     </AppProvider>
   );
